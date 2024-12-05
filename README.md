@@ -1,6 +1,6 @@
 # Проектная работа Mesto
 
-Макет Mesto в Figma https://www.figma.com/design/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0-1
+Макет https://www.figma.com/design/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0-1
 
 # Чек-лист
 
