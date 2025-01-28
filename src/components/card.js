@@ -1,6 +1,11 @@
 const cardTemplate = document.querySelector("#card-template").content;
 // Создаём карточки
-export function createCard(cardData, cbDelete, cbLike, cbImage) {
+export function createCard(
+  cardData,
+  cbDeleteCard,
+  cbToggleLike,
+  cbOpenImagePopup
+) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
   // Заполняем данные карточки
@@ -15,18 +20,26 @@ export function createCard(cardData, cbDelete, cbLike, cbImage) {
 
   // Удаление карточки
   deleteButton.addEventListener("click", () => {
-    cbDelete(cardElement);
+    cbDeleteCard(cardElement);
   });
 
   // Ставим лайк
   likeButton.addEventListener("click", () => {
-    cbLike(likeButton);
+    cbToggleLike(likeButton);
   });
 
   // Добавляем обработчик для открытия попапа
   cardImage.addEventListener("click", () => {
-    cbImage(cardData);
+    cbOpenImagePopup(cardData);
   });
 
   return cardElement;
+}
+
+export function deleteCard(cardElement) {
+  cardElement.remove();
+}
+
+export function toggleLike(likeButton) {
+  likeButton.classList.toggle("card__like-button_is-active");
 }
