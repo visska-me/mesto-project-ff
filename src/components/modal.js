@@ -1,4 +1,7 @@
+import { clearValidation } from "../index.js";  
+
 const buttonsClosePopup = document.querySelectorAll(".popup__close");
+
 buttonsClosePopup.forEach((button) => {
   button.addEventListener("click", () => {
     const popup = button.closest(".popup");
