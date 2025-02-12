@@ -37,7 +37,9 @@ console.log("ID владельца карточки:", cardData.owner._id);
   // Показываем кнопку удаления только для своих карточек
   if (cardData.owner._id === userId) {
     deleteButton.addEventListener("click", (evt) => {
-      cbDeleteCard(cardData._id, cardElement);
+      cbDeleteCard(cardData._id, cardElement)
+        .then(() => cardElement.remove()) // Удаляем из DOM после удаления с сервера
+        .catch((err) => console.log("Ошибка удаления:", err));
     });
   } else {
     deleteButton.classList.add("card__delete-button_inactive");
