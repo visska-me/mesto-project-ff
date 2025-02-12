@@ -20,19 +20,16 @@ export function createCard(
   const likeButton = cardElement.querySelector(".card__like-button");
   const cardLikeCount = cardElement.querySelector(".card__like-count");
 
-
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
-  cardLikeCount.textContent = cardData.likes ? cardData.likes.length : 0;
+  cardLikeCount.textContent = cardData.likes.length;
+  // cardLikeCount.textContent = cardData.likes ? cardData.likes.length : 0;
 
   // Проверяем, лайкнул ли текущий пользователь эту карточку
   if (cardData.likes && cardData.likes.some(like => like._id === userId)) {
   likeButton.classList.add("card__like-button_is-active");
   }
-
-  console.log("ID текущего пользователя:", userId);
-console.log("ID владельца карточки:", cardData.owner._id);
 
   // Показываем кнопку удаления только для своих карточек
   if (cardData.owner._id === userId) {
@@ -46,9 +43,11 @@ console.log("ID владельца карточки:", cardData.owner._id);
   }
 
   // Ставим лайк
-  likeButton.addEventListener("click", () => {
-    cbToggleLike(likeButton);
+  likeButton.addEventListener("click", (evt) => {
+    toggleLike(evt, cardData._id, cardLikeCount);
   });
+
+  
 
   // Добавляем обработчик для открытия попапа
   cardImage.addEventListener("click", () => {
@@ -58,6 +57,16 @@ console.log("ID владельца карточки:", cardData.owner._id);
   return cardElement;
 }
 
-export function toggleLike(likeButton) {
-  likeButton.classList.toggle("card__like-button_is-active");
-};
+export function toggleLike(evt, CardID, cardLikeCount) {
+  const likeButton = evt.target;
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
+  const likeMethod = isLiked ? removeLikeCard : likeCard;
+
+  likeMethod(CardID)
+    .then((updatedCard) => {
+      likeButton.classList.toggle("card__like-button_is-active");
+      cardLikeCount.textContent = updatedCard.likes.length;
+    })
+    .catch((err) => console.log("Ошибка при обновлении лайка:", err));
+}
+
