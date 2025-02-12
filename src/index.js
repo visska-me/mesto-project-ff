@@ -50,9 +50,11 @@ enableValidation(validationSettings);
 Promise.all([getUserInfo(), getCards()])
   .then(([userData, cards]) => {
     updateProfileData(userData);
+    const userId = userData._id;
     cards.forEach((cardData) => {
       const cardElement = createCard(
         cardData,
+        userId,
         deleteCard,
         toggleLike,
         openImagePopup

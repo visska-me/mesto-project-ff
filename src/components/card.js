@@ -31,10 +31,13 @@ export function createCard(
   likeButton.classList.add("card__like-button_is-active");
   }
 
+  console.log("ID текущего пользователя:", userId);
+console.log("ID владельца карточки:", cardData.owner._id);
+
   // Показываем кнопку удаления только для своих карточек
   if (cardData.owner._id === userId) {
     deleteButton.addEventListener("click", (evt) => {
-      cbDeleteCard(evt, cardData._id, cardElement);
+      cbDeleteCard(cardData._id, cardElement);
     });
   } else {
     deleteButton.classList.add("card__delete-button_inactive");
