@@ -2,22 +2,25 @@ import "./index.css";
 import { cardTemplate, createCard, toggleLike } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 import { clearValidation, enableValidation } from "./validation";
-import { getUserInfo, getCards, addCard, changeUserInfo, deleteCard } from "./components/api";
+import { getUserInfo, getCards, addCard, changeUserInfo, deleteCard, changeProfileImage } from "./components/api";
 
 // Получаем элементы из DOM
 const cardList = document.querySelector(".places__list");
 const buttonEditProfile = document.querySelector(".profile__edit-button");
-const buttonAddCard = document.querySelector(".profile__add-button");
-// const buttonSubmit = document.querySelector(".popup__button");
-
 const popupEditProfile = document.querySelector(".popup_type_edit");
+const buttonAddCard = document.querySelector(".profile__add-button");
 const popupAddCard = document.querySelector(".popup_type_new-card");
 const popupImage = document.querySelector(".popup_type_image");
 const popupCardImage = popupImage.querySelector(".popup__image");
 const popupCardTitle = popupImage.querySelector(".popup__caption");
-
+const profileImage = document.querySelector('.profile__image');
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const popupChangeProfileImage = document.querySelector('.popup_type_change_profile-image');
+const formChangeProfileImage = document.forms['change_profile-image'];
+const popupChangeProfileImageLink = formChangeProfileImage.querySelector('.popup__input_type_profile-image');
+// const buttonSubmit = document.querySelector(".popup__button");
+
 const formEditProfile = document.forms["edit-profile"];
 const popupEditProfileName = formEditProfile.querySelector(
   ".popup__input_type_name"
@@ -85,6 +88,32 @@ buttonAddCard.addEventListener("click", () => {
   clearValidation(popupAddCard, validationSettings);
   openModal(popupAddCard);
 });
+
+// Кнопка редактирования аватарки
+profileImage.addEventListener("click", () => {
+  formChangeProfileImage.reset();
+  clearValidation(formChangeProfileImage, validationSettings)
+  openModal(popupChangeProfileImage);
+})
+
+// Форма редактирования аватарки
+function handleFormEditProfileImage(evt) {
+  evt.preventDefault();
+  if (!formChangeProfileImage.checkValidity()) {
+    return;
+  }
+  const newProfileImage = popupChangeProfileImageLink.value;
+  changeProfileImage(newProfileImage)
+  .then((updatedData) => {
+    profileImage.style.backgroundImage = `url(${updatedData.avatar})`;
+    closeModal(popupChangeProfileImage);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
+formChangeProfileImage.addEventListener("submit", handleFormEditProfileImage);
+
 
 // Обработчики формы - при нажатии на кнопку Сохранить внутри формы
 // Форма редактирования профиля

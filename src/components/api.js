@@ -13,7 +13,7 @@ export function getUserInfo() {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   })
 }
 
@@ -33,7 +33,7 @@ export function changeUserInfo(profilTitle, profileDescription) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error ${res.status}`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   })
 }
 
@@ -48,7 +48,7 @@ export function getCards() {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error ${res.status}`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 }
 
@@ -65,7 +65,7 @@ export function addCard(name, link) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 }
 
@@ -80,7 +80,7 @@ export function likeCard(CardID) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 }
 
@@ -95,7 +95,7 @@ export function removeLikeCard(CardID) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Error`);
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 }
 
@@ -110,6 +110,24 @@ export function deleteCard(CardID) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Error`);
+  return Promise.reject(`Ошибка: ${res.status}`);
 });
+}
+
+export function changeProfileImage(link) {
+  return fetch(`${BASE_URL}/users/me/avatar`, {
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    method: "PATCH", 
+    body: JSON.stringify({
+      avatar: link,
+    })
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
 }
